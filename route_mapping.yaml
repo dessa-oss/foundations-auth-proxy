@@ -1,0 +1,16 @@
+scheduler_rest_api:
+  - /job_bundle
+  - /job_bundle/<string:job_id>
+  - /queued_jobs
+  - /queued_jobs/<int:position>
+  - /running_jobs
+  - /running_jobs/<string:job_id>
+  - /running_jobs/<string:job_id>/logs
+  - /running_jobs/<string:job_id>/container_id
+  - /completed_jobs
+  - /completed_jobs/<string:job_id>/logs
+  - /failed_jobs
+  - /failed_jobs/<string:job_id>/logs
+  - /workers
+  - /workers/<int:worker_id>
+  - /jobs/<string:job_id>
