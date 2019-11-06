@@ -5,8 +5,6 @@ Proprietary and confidential
 Written by Cole Clifford <c.clifford@dessa.com>, 11 2019
 """
 
-# a = requests.post("http://0.0.0.0:5000", proxies={"http":"http://0.0.0.0:3333", "https":"http://0.0.0.0:3333"}, cookies={"token":"test-token"}, json={"payload":"test payload"})
-
 from flask import Flask, request, Response
 from urllib.parse import urlparse
 import requests
