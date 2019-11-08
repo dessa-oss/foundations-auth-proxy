@@ -10,6 +10,19 @@ from urllib.parse import urlparse
 import requests
 
 
+def get_args():
+    import argparse
+    import sys
+
+    parser = argparse.ArgumentParser(description='Starts a local docker scheduler')
+    parser.add_argument('-H', '--host', type=str, default="0.0.0.0", help='host to bind server (default: 0.0.0.0)')
+    parser.add_argument('-p', '--port', type=int, default=5558, help='port to bind server (default: 5000)')
+    parser.add_argument('-d', '--debug', action='store_true', help='starts server in debug mode')
+    parser.add_argument('-n', '--null', action='store_true', help='starts server as a null proxy - forwarding everything through without the need for authorization')
+
+    return parser.parse_args(sys.argv[1:])
+
+
 def _load_yaml(path):
     import yaml
     with open(path, 'r') as file:
@@ -60,6 +73,7 @@ def _token_is_valid(headers):
         return False
 
 
+args = get_args()
 app = Flask(__name__)
 route_mapping = _load_yaml("route_mapping.yaml")
 rule_mapping = _generate_route_mapping_rules(route_mapping)
@@ -86,7 +100,7 @@ def proxy(path=None):
     full_redirect_url_with_path = f"{redirect_url}{urlparse(request.url).path}"
 
     # Resolve the token situation
-    if "login" in path:
+    if args.null or "login" in path:
         token_is_valid = True
     else:
         token_is_valid = _token_is_valid(request.headers)
@@ -115,4 +129,4 @@ def proxy(path=None):
 
 
 if __name__ == "__main__":
-    app.run(use_reloader=True, debug=True, port=3333)
+    app.run(use_reloader=False, debug=args.debug, host=args.host, port=args.port, threaded=True)

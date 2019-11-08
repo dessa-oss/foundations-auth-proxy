@@ -15,5 +15,6 @@ scheduler_rest_api:
   - /workers/<int:worker_id>
   - /jobs/<string:job_id>
 foundations_rest_api:
+  - /api/v2beta/auth/cli_login
   - /api/v2beta/auth/login
   - /api/v2beta/userinfo
