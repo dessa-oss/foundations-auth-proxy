@@ -43,12 +43,14 @@ def _is_path_in_rule_list(path, rule_list):
 def _get_proper_url(path):
     if _is_path_in_rule_list(path, rule_mapping["scheduler_rest_api"]):
         return proxy_config["service_uris"]["scheduler_rest_api"]
+    elif _is_path_in_rule_list(path, rule_mapping["foundations_rest_api"]):
+        return proxy_config["service_uris"]["foundations_rest_api"]
     else:
         return False
 
 
-def _token_is_valid(token):
-    a = requests.get("http://localhost:37722/api/v2beta/auth/verify", headers={"Authorization": f'bearer {token}'})
+def _token_is_valid(headers):
+    a = requests.get("http://localhost:37722/api/v2beta/auth/verify", headers=headers)
     try:
         if a.status_code == 200:
             return True
@@ -77,22 +79,21 @@ def heartbeat():
 @app.route("/<path:path>", methods=proxy_config["supported_proxy_methods"])
 def proxy(path=None):
 
-    # Validate that there is a token
-    if "auth" not in request.url:
-        if "Token" not in request.headers:
-            return Response("Cannot find token in the request", status=500)
-        else:
-            user_token = request.headers["Token"]
-
     # Get the proper address based on the route mapping
     redirect_url = _get_proper_url(path)
     if not redirect_url:
-        print("No address!")
         return Response("Cannot find that address in the proxies route mapping", status=500)
     full_redirect_url_with_path = f"{redirect_url}{urlparse(request.url).path}"
 
+    # Resolve the token situation
+    if "login" in path:
+        token_is_valid = True
+    else:
+        token_is_valid = _token_is_valid(request.headers)
+
     # Check token from cookies
-    if _token_is_valid(user_token) or "auth" in request.url:
+    if token_is_valid:
+
         # Forward on the response
         resp = requests.request(
             method=request.method,
