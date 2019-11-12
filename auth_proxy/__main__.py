@@ -63,7 +63,7 @@ def _get_proper_url(path):
 
 
 def _token_is_valid(headers):
-    a = requests.get("http://localhost:37722/api/v2beta/auth/verify", headers=headers)
+    a = requests.get(f"{proxy_config['service_uris']['foundations_rest_api']}/api/v2beta/auth/verify", headers=headers)
     try:
         if a.status_code == 200:
             return True
