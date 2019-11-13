@@ -15,6 +15,16 @@ scheduler_rest_api:
   - /workers/<int:worker_id>
   - /jobs/<string:job_id>
 foundations_rest_api:
+  - /api/v1/projects
   - /api/v2beta/auth/cli_login
-  - /api/v2beta/auth/login
+  - /api/v2beta/auth/logout
   - /api/v2beta/userinfo
+  - /api/v2beta/projects/<string:project_name>/job_listing
+  - /api/v2beta/projects/<string:project_name>/description
+  - /api/v2beta/projects/<string:project_name>/note_listing
+  - /api/v2beta/projects/<string:project_name>/overview_metrics
+  - /api/v2beta/projects/<string:project_name>/job_listing/<string:job_id>/logs
+  - /api/v2beta/upload_to_tensorboard
+  - /api/v2beta/projects/<string:project_name>/job_listing/<string:job_id>/tag/<string:tag_name>
+  - /api/v2beta/projects/<string:project_name>/job_listing/<string:job_id>/tags/<string:tag_name>
+  - /api/v2beta/projects/<string:project_name>/job_listing/<string:job_id>/tags

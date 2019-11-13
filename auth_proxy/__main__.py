@@ -6,6 +6,7 @@ Written by Cole Clifford <c.clifford@dessa.com>, 11 2019
 """
 
 from flask import Flask, request, Response
+from flask_cors import CORS
 from urllib.parse import urlparse
 import requests
 
@@ -63,9 +64,9 @@ def _get_proper_url(path):
 
 
 def _token_is_valid(headers):
-    a = requests.get(f"{proxy_config['service_uris']['foundations_rest_api']}/api/v2beta/auth/verify", headers=headers)
+    response = requests.get(f"{proxy_config['service_uris']['foundations_rest_api']}/api/v2beta/auth/verify", headers=headers)
     try:
-        if a.status_code == 200:
+        if response.status_code == 200:
             return True
         else:
             return False
@@ -100,7 +101,8 @@ def proxy(path=None):
     full_redirect_url_with_path = f"{redirect_url}{urlparse(request.url).path}"
 
     # Resolve the token situation
-    if args.null or "login" in path:
+    # For login and logout, token check should not be required
+    if args.null or "login" in path or "logout" in path:
         token_is_valid = True
     else:
         token_is_valid = _token_is_valid(request.headers)
@@ -125,8 +127,9 @@ def proxy(path=None):
         response = Response(resp.content, resp.status_code, headers)
         return response
     else:
-        return Response("Token is not valid", status=500)
+        return Response("Token is not valid", status=401)
 
 
 if __name__ == "__main__":
+    CORS(app)
     app.run(use_reloader=False, debug=args.debug, host=args.host, port=args.port, threaded=True)
