@@ -17,7 +17,7 @@ def get_args():
 
     parser = argparse.ArgumentParser(description='Starts a local docker scheduler')
     parser.add_argument('-H', '--host', type=str, default="0.0.0.0", help='host to bind server (default: 0.0.0.0)')
-    parser.add_argument('-p', '--port', type=int, default=5558, help='port to bind server (default: 5000)')
+    parser.add_argument('-p', '--port', type=int, default=5558, help='port to bind server (default: 5558)')
     parser.add_argument('-d', '--debug', action='store_true', help='starts server in debug mode')
     parser.add_argument('-n', '--null', action='store_true', help='starts server as a null proxy - forwarding everything through without the need for authorization')
 

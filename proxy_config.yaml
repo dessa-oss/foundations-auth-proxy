@@ -1,6 +1,6 @@
 service_uris:
   scheduler_rest_api: http://atlas-ce-local-scheduler:5000
-  foundations_rest_api: http://localhost:37722
+  foundations_rest_api: http://atlas-ce-rest-api:80
 supported_proxy_methods:
   - GET
   - POST
