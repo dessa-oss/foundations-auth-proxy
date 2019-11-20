@@ -11,7 +11,7 @@ By default the server runs on `http://0.0.0.0:5558`. This can be changed via the
 
 You may also have to configure `proxy_config.yaml` with the proper `service_uri` information.
 
-## Running locally
+## Running Locally
 Run `python -m auth_proxy` from the project root directory.
 
 ## Running in Docker
