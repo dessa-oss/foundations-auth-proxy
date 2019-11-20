@@ -18,6 +18,7 @@ foundations_rest_api:
   - /api/v1/projects
   - /api/v2beta/auth/cli_login
   - /api/v2beta/auth/logout
+  - /api/v2beta/auth/verify
   - /api/v2beta/userinfo
   - /api/v2beta/projects/<string:project_name>/job_listing
   - /api/v2beta/projects/<string:project_name>/description
@@ -28,3 +29,4 @@ foundations_rest_api:
   - /api/v2beta/projects/<string:project_name>/job_listing/<string:job_id>/tag/<string:tag_name>
   - /api/v2beta/projects/<string:project_name>/job_listing/<string:job_id>/tags/<string:tag_name>
   - /api/v2beta/projects/<string:project_name>/job_listing/<string:job_id>/tags
+  - /api/v2beta/projects/<string:project_name>/job_listing/<string:job_id>
