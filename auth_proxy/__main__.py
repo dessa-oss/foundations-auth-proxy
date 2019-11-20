@@ -64,6 +64,8 @@ def _get_proper_url(path):
 
 
 def _token_is_valid(headers):
+    excluded_headers = ['content-length', 'content-type']
+    headers = { key: value for key, value in headers.items() if key.lower() not in excluded_headers }
     response = requests.get(f"{proxy_config['service_uris']['foundations_rest_api']}/api/v2beta/auth/verify", headers=headers)
     try:
         if response.status_code == 200:
