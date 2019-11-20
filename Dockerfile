@@ -26,4 +26,4 @@ WORKDIR /app/auth-proxy
 
 EXPOSE 5558
 
-ENTRYPOINT ["python", "-m", "auth_proxy", "-p 5558"]
+ENTRYPOINT ["python", "-m", "auth_proxy"]

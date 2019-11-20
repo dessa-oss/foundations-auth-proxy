@@ -17,7 +17,6 @@ def get_args():
 
     parser = argparse.ArgumentParser(description='Starts a local docker scheduler')
     parser.add_argument('-H', '--host', type=str, default="0.0.0.0", help='host to bind server (default: 0.0.0.0)')
-    parser.add_argument('-p', '--port', type=int, default=5558, help='port to bind server (default: 5558)')
     parser.add_argument('-d', '--debug', action='store_true', help='starts server in debug mode')
     parser.add_argument('-n', '--null', action='store_true', help='starts server as a null proxy - forwarding everything through without the need for authorization')
 
@@ -134,4 +133,4 @@ def proxy(path=None):
 
 if __name__ == "__main__":
     CORS(app)
-    app.run(use_reloader=False, debug=args.debug, host=args.host, port=args.port, threaded=True)
+    app.run(use_reloader=False, debug=args.debug, host=args.host, port=80, threaded=True)
