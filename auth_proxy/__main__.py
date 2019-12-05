@@ -15,17 +15,31 @@ def get_args():
     import argparse
     import sys
 
-    parser = argparse.ArgumentParser(description='Starts a local docker scheduler')
-    parser.add_argument('-H', '--host', type=str, default="0.0.0.0", help='host to bind server (default: 0.0.0.0)')
-    parser.add_argument('-d', '--debug', action='store_true', help='starts server in debug mode')
-    parser.add_argument('-n', '--null', action='store_true', help='starts server as a null proxy - forwarding everything through without the need for authorization')
+    parser = argparse.ArgumentParser(description="Starts a local docker scheduler")
+    parser.add_argument(
+        "-H",
+        "--host",
+        type=str,
+        default="0.0.0.0",
+        help="host to bind server (default: 0.0.0.0)",
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="starts server in debug mode"
+    )
+    parser.add_argument(
+        "-n",
+        "--null",
+        action="store_true",
+        help="starts server as a null proxy - forwarding everything through without the need for authorization",
+    )
 
     return parser.parse_args(sys.argv[1:])
 
 
 def _load_yaml(path):
     import yaml
-    with open(path, 'r') as file:
+
+    with open(path, "r") as file:
         return yaml.load(file)
 
 
@@ -63,9 +77,16 @@ def _get_proper_url(path):
 
 
 def _token_is_valid(headers):
-    excluded_headers = ['content-length', 'content-type']
-    headers = { key: value for key, value in headers.items() if key.lower() not in excluded_headers }
-    response = requests.get(f"{proxy_config['service_uris']['foundations_rest_api']}/api/v2beta/auth/verify", headers=headers)
+    excluded_headers = ["content-length", "content-type"]
+    headers = {
+        key: value
+        for key, value in headers.items()
+        if key.lower() not in excluded_headers
+    }
+    response = requests.get(
+        f"{proxy_config['service_uris']['foundations_rest_api']}/api/v2beta/auth/verify",
+        headers=headers,
+    )
     try:
         if response.status_code == 200:
             return True
@@ -98,7 +119,9 @@ def proxy(path=None):
     # Get the proper address based on the route mapping
     redirect_url = _get_proper_url(path)
     if not redirect_url:
-        return Response("Cannot find that address in the proxies route mapping", status=500)
+        return Response(
+            "Cannot find that address in the proxies route mapping", status=500
+        )
     full_redirect_url_with_path = f"{redirect_url}{urlparse(request.url).path}"
 
     # Resolve the token situation
@@ -118,12 +141,20 @@ def proxy(path=None):
             headers=request.headers,
             data=request.get_data(),
             cookies=request.cookies,
-            allow_redirects=False
+            allow_redirects=False,
         )
         # Setup the response headers
-        excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
-        headers = [(name, value) for (name, value) in resp.raw.headers.items()
-                   if name.lower() not in excluded_headers]
+        excluded_headers = [
+            "content-encoding",
+            "content-length",
+            "transfer-encoding",
+            "connection",
+        ]
+        headers = [
+            (name, value)
+            for (name, value) in resp.raw.headers.items()
+            if name.lower() not in excluded_headers
+        ]
         # Create the response object
         response = Response(resp.content, resp.status_code, headers)
         return response
@@ -133,4 +164,6 @@ def proxy(path=None):
 
 if __name__ == "__main__":
     CORS(app)
-    app.run(use_reloader=False, debug=args.debug, host=args.host, port=80, threaded=True)
+    app.run(
+        use_reloader=False, debug=args.debug, host=args.host, port=80, threaded=True
+    )
