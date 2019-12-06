@@ -107,8 +107,8 @@ proxy_config = _load_yaml("proxy_config.yaml")
 if args.dev:
     import os
     load_dotenv('default.env')
-    proxy_config['service_uris']['scheduler_rest_api'] = f'http://{os.getenv('SCHEDULER_HOST')}:{os.getenv('SCHEDULER_PORT')}'
-    proxy_config['service_uris']['foundations_rest_api'] = f'http://{os.getenv('FOUNDATIONS_REST_API_HOST')}:{os.getenv('FOUNDATIONS_REST_API_PORT')}'
+    proxy_config['service_uris']['scheduler_rest_api'] = f'http://{os.getenv("SCHEDULER_HOST")}:{os.getenv("SCHEDULER_PORT")}'
+    proxy_config['service_uris']['foundations_rest_api'] = f'http://{os.getenv("FOUNDATIONS_REST_API_HOST")}:{os.getenv("FOUNDATIONS_REST_API_PORT")}'
 
 
 @app.route("/")
