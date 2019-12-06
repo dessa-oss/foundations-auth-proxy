@@ -10,6 +10,7 @@ from flask_cors import CORS
 from urllib.parse import urlparse
 import requests
 
+from dotenv import load_dotenv
 
 def get_args():
     import argparse
@@ -32,7 +33,10 @@ def get_args():
         action="store_true",
         help="starts server as a null proxy - forwarding everything through without the need for authorization",
     )
-
+    parser.add_argument(
+        "-p", "--port", type=int, default=80, help="port to bind server (default: 80)"
+    )
+    parser.add_argument("--dev", help="launch as part of a dev environment")
     return parser.parse_args(sys.argv[1:])
 
 
@@ -70,10 +74,9 @@ def _is_path_in_rule_list(path, rule_list):
 def _get_proper_url(path):
     if _is_path_in_rule_list(path, rule_mapping["scheduler_rest_api"]):
         return proxy_config["service_uris"]["scheduler_rest_api"]
-    elif _is_path_in_rule_list(path, rule_mapping["foundations_rest_api"]):
+    if _is_path_in_rule_list(path, rule_mapping["foundations_rest_api"]):
         return proxy_config["service_uris"]["foundations_rest_api"]
-    else:
-        return False
+    return False
 
 
 def _token_is_valid(headers):
@@ -90,8 +93,7 @@ def _token_is_valid(headers):
     try:
         if response.status_code == 200:
             return True
-        else:
-            return False
+        return False
     except:
         return False
 
@@ -158,12 +160,9 @@ def proxy(path=None):
         # Create the response object
         response = Response(resp.content, resp.status_code, headers)
         return response
-    else:
-        return Response("Token is not valid", status=401)
+    return Response("Token is not valid", status=401)
 
 
 if __name__ == "__main__":
     CORS(app)
-    app.run(
-        use_reloader=False, debug=args.debug, host=args.host, port=80, threaded=True
-    )
+    app.run(use_reloader=False, debug=args.debug, host=args.host, port=args.port)
