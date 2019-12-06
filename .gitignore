@@ -7,3 +7,6 @@ __pycache__
 .venv
 .DS_Store
 Pipfile*
+build/
+dist/
+*.egg-info
