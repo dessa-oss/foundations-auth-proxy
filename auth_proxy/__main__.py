@@ -36,7 +36,7 @@ def get_args():
     parser.add_argument(
         "-p", "--port", type=int, default=80, help="port to bind server (default: 80)"
     )
-    parser.add_argument("--dev", help="launch as part of a dev environment")
+    parser.add_argument("--dev", action="store_true", help="launch as part of a dev environment")
     return parser.parse_args(sys.argv[1:])
 
 
@@ -103,6 +103,12 @@ app = Flask(__name__)
 route_mapping = _load_yaml("route_mapping.yaml")
 rule_mapping = _generate_route_mapping_rules(route_mapping)
 proxy_config = _load_yaml("proxy_config.yaml")
+
+if args.dev:
+    import os
+    load_dotenv('default.env')
+    proxy_config['service_uris']['scheduler_rest_api'] = f'http://{os.getenv('SCHEDULER_HOST')}:{os.getenv('SCHEDULER_PORT')}'
+    proxy_config['service_uris']['foundations_rest_api'] = f'http://{os.getenv('FOUNDATIONS_REST_API_HOST')}:{os.getenv('FOUNDATIONS_REST_API_PORT')}'
 
 
 @app.route("/")
