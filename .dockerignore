@@ -8,3 +8,7 @@ __pycache__
 .DS_Store
 build_and_push.sh
 README.md
+.history
+build_dist.shehanigans
+Jenkinsfile
+get_version.py

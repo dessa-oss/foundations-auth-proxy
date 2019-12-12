@@ -10,3 +10,4 @@ Pipfile*
 build/
 dist/
 *.egg-info
+.history
