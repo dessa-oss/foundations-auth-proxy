@@ -39,6 +39,7 @@ pipeline{
       steps {
         container("python3"){
           sh 'docker login $NEXUS_DOCKER_REGISTRY -u $NEXUS_USER -p $NEXUS_PASSWORD'
+          sh 'docker login $NEXUS_DOCKER_STAGING -u $NEXUS_USER -p $NEXUS_PASSWORD'
           sh "./build_and_push.sh $ATLAS_TYPE"
         }
       }
