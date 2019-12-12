@@ -43,16 +43,16 @@ pipeline{
         }
       }
     }
-    stage('Pull JBoss keycloak and push auth-server'){
-      steps {
-        container("python3"){
-          sh "docker pull jboss/keycloak:8.0.0"
-          sh "docker tag jboss/keycloak:8.0.0 $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server:$(python get_version.py)"
-          sh "docker tag jboss/keycloak:8.0.0 $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server:latest"
-          sh "docker push $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server"
-        }
-      }
-    }
+    // stage('Pull JBoss keycloak and push auth-server'){
+    //   steps {
+    //     container("python3"){
+    //       sh "docker pull jboss/keycloak:8.0.0"
+    //       sh "docker tag jboss/keycloak:8.0.0 $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server:$(python get_version.py)"
+    //       sh "docker tag jboss/keycloak:8.0.0 $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server:latest"
+    //       sh "docker push $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server"
+    //     }
+    //   }
+    // }
     stage('Trigger Atlas CE Build Pipeline') {
       steps {
         container("python3"){
