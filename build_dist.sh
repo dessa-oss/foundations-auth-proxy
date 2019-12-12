@@ -1,2 +1,3 @@
-python setup.py sdist bdist_wheel
+#!/bin/bash
 
+python setup.py sdist bdist_wheel
