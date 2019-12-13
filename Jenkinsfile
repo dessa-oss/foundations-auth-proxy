@@ -35,25 +35,28 @@ pipeline{
         }
       }
     }
-    stage('Build and push Auth Proxy'){
+    stage('Setup Docker Credentails') {
       steps {
-        container("python3"){
+        container("python3") {
           sh 'docker login $NEXUS_DOCKER_REGISTRY -u $NEXUS_USER -p $NEXUS_PASSWORD'
           sh 'docker login $NEXUS_DOCKER_STAGING -u $NEXUS_USER -p $NEXUS_PASSWORD'
+        }
+      }
+    }
+    stage('Build and push Auth Proxy for Altas'){
+      steps {
+        container("python3"){
           sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas-$ATLAS_TYPE ./build_and_push.sh $ATLAS_TYPE"
         }
       }
     }
-    // stage('Pull JBoss keycloak and push auth-server'){
-    //   steps {
-    //     container("python3"){
-    //       sh "docker pull jboss/keycloak:8.0.0"
-    //       sh "docker tag jboss/keycloak:8.0.0 $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server:$(python get_version.py)"
-    //       sh "docker tag jboss/keycloak:8.0.0 $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server:latest"
-    //       sh "docker push $NEXUS_DOCKER_REGISTRY/atlas-team/auth-server"
-    //     }
-    //   }
-    // }
+    stage('Build and push Auth Proxy for Orbit'){
+      steps {
+        container("python3"){
+          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/orbit-team ./build_and_push.sh $ORBIT_TYPE"
+        }
+      }
+    }
     stage('Trigger Atlas CE Build Pipeline') {
       steps {
         container("python3"){
