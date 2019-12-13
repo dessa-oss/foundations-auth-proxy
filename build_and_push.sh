@@ -1,8 +1,8 @@
 #!/bin/bash
 
 BUILD_VERSION=`python get_version.py | sed 's/+/_/g'`
-REGISTRY=$NEXUS_DOCKER_REGISTRY && [[ $1 -eq "CE" ]] && REGISTRY=${NEXUS_DOCKER_REGISTRY}/atlas-ce-dev
-DOCKER_FILE="Dockerfile" && [[ $1 -eq "CE" ]] && DOCKER_FILE="Dockerfile-CE"
+REGISTRY=$NEXUS_DOCKER_REGISTRY
+DOCKER_FILE="Dockerfile" && [[ $1 -eq "ce" ]] && DOCKER_FILE="Dockerfile-CE"
 
 docker build --network=host -t "$REGISTRY/auth-proxy:$BUILD_VERSION" -f $DOCKER_FILE . \
   && docker tag "$REGISTRY/auth-proxy:$BUILD_VERSION" "$REGISTRY/auth-proxy:latest" \
