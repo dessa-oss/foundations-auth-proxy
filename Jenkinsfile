@@ -43,7 +43,7 @@ pipeline{
         }
       }
     }
-    stage('Build and push Auth Proxy for Altas'){
+    stage('Build and push Auth Proxy for Atlas'){
       steps {
         container("python3"){
           sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas-$ATLAS_TYPE ./build_and_push.sh $ATLAS_TYPE"
@@ -53,31 +53,7 @@ pipeline{
     stage('Build and push Auth Proxy for Orbit'){
       steps {
         container("python3"){
-          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/orbit-team ./build_and_push.sh $ORBIT_TYPE"
-        }
-      }
-    }
-    stage('Trigger Atlas CE Build Pipeline') {
-      steps {
-        container("python3"){
-          // script {
-          //   echo "Triggering job for building Atlas CE Artifacts"
-          //   version = sh(script: 'python get_version.py', returnStdout: true).trim()
-          //   println("Attempting to trigger pipeline with version of ${version}")
-          //   build job: "build-installer-atlas-ce", wait: false, parameters: [
-          //     [$class: 'StringParameterValue', name: 'atlas_ce_rest_api', value: "docker-staging.shehanigans.net/atlas-ce-dev/foundations-rest-api:${version}"],
-          //     [$class: 'StringParameterValue', name: 'atlas_ce_gui', value: "docker-staging.shehanigans.net/atlas-ce-dev/foundations-gui:${version}"],
-          //     [$class: 'StringParameterValue', name: 'atlas_ce_tracker', value: "docker-staging.shehanigans.net/atlas-ce-dev/tracker:${version}"],
-          //     [$class: 'StringParameterValue', name: 'scheduler', value: "docker-staging.shehanigans.net/atlas-ce-dev/scheduler:latest"],
-          //     [$class: 'StringParameterValue', name: 'atlas_ce_worker', value: "docker-staging.shehanigans.net/atlas-ce-dev/worker:${version}"],
-          //     [$class: 'StringParameterValue', name: 'archive_server', value: "docker-staging.shehanigans.net/atlas-ce-dev/archive_server:latest"],
-          //     [$class: 'StringParameterValue', name: 'tensorboard_server', value: "docker-staging.shehanigans.net/atlas-ce-dev/tensorboard-server:${version}"],
-          //     [$class: 'StringParameterValue', name: 'tensorboard_rest_api', value: "docker-staging.shehanigans.net/atlas-ce-dev/tensorboard-rest-api:${version}"],
-          //     [$class: 'StringParameterValue', name: 'atlas_server', value: '0.2.4.dev2'],
-          //     [$class: 'StringParameterValue', name: 'foundations_atlas_ce_pi_py', value: "${version}"],
-          //     [$class: 'StringParameterValue', name: 'ATLAS_CE_VERSION', value: 'test_to_release']
-          //   ]
-          // }
+          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/orbit-team ./build_and_push.sh ce" // temporarily forcing orbit to use a null proxy until auth fully integrated
         }
       }
     }
