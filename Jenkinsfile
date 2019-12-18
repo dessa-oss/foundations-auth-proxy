@@ -46,15 +46,15 @@ pipeline{
     stage('Build and push Auth Proxy for Atlas'){
       steps {
         container("python3") {
-          sh "[[ $ATLAS_TYPE -eq ce ]] && export ATLAS_PROXY_TYPE=null"
-          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas-$ATLAS_TYPE ./build_and_push.sh $ATLAS_PROXY_TYPE"
+          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas-ce ./build_and_push.sh null"
+          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas-team ./build_and_push.sh"
         }
       }
     }
     stage('Build and push Auth Proxy for Orbit'){
       steps {
         container("python3") {
-          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/orbit-team ./build_and_push.sh null"
+          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/orbit-team ./build_and_push.sh"
         }
       }
     }
