@@ -1,10 +1,9 @@
 #!/bin/bash
 
 BUILD_VERSION=`python get_version.py | sed 's/+/_/g'`
-REGISTRY=$NEXUS_DOCKER_REGISTRY
-DOCKER_FILE="Dockerfile" && [[ $1 -eq "ce" ]] && DOCKER_FILE="Dockerfile-CE"
+DOCKER_FILE="Dockerfile" && [[ ${1:} -eq "null" ]] && DOCKER_FILE="Dockerfile-null"
 
-docker build --network=host -t "$REGISTRY/auth-proxy:$BUILD_VERSION" -f $DOCKER_FILE . \
-  && docker tag "$REGISTRY/auth-proxy:$BUILD_VERSION" "$REGISTRY/auth-proxy:latest" \
-  && docker push "$REGISTRY/auth-proxy" \
-  && echo "Successfully build and pushed auth-proxy to the $REGISTRY repository"
+docker build --network=host -t "$NEXUS_DOCKER_REGISTRY/auth-proxy:$BUILD_VERSION" -f $DOCKER_FILE . \
+  && docker tag "$NEXUS_DOCKER_REGISTRY/auth-proxy:$BUILD_VERSION" "$NEXUS_DOCKER_REGISTRY/auth-proxy:latest" \
+  && docker push "$NEXUS_DOCKER_REGISTRY/auth-proxy" \
+  && echo "Successfully build and pushed auth-proxy to the $NEXUS_DOCKER_REGISTRY repository"
