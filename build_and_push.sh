@@ -3,6 +3,7 @@
 BUILD_VERSION=`python get_version.py | sed 's/+/_/g'`
 echo $1
 DOCKER_FILE="Dockerfile" && [[ $1 -eq "null" ]] && DOCKER_FILE="Dockerfile-null"
+echo $DOCKER_FILE
 
 docker build --network=host -t "$NEXUS_DOCKER_REGISTRY/auth-proxy:$BUILD_VERSION" -f $DOCKER_FILE . \
   && docker tag "$NEXUS_DOCKER_REGISTRY/auth-proxy:$BUILD_VERSION" "$NEXUS_DOCKER_REGISTRY/auth-proxy:latest" \
