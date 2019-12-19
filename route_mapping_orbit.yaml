@@ -14,6 +14,8 @@ scheduler_rest_api:
   - /workers
   - /workers/<int:worker_id>
   - /jobs/<string:job_id>
+  - /scheduled_jobs
+  - /scheduled_jobs/<string:job_id>
 atlas_rest_api:
   - /api/v2beta/auth/cli_login
   - /api/v2beta/auth/logout
