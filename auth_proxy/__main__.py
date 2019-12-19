@@ -72,10 +72,9 @@ def _is_path_in_rule_list(path, rule_list):
 
 
 def _get_proper_url(path):
-    if _is_path_in_rule_list(path, rule_mapping["scheduler_rest_api"]):
-        return proxy_config["service_uris"]["scheduler_rest_api"]
-    if _is_path_in_rule_list(path, rule_mapping["foundations_rest_api"]):
-        return proxy_config["service_uris"]["foundations_rest_api"]
+    for key in rule_mapping:
+        if _is_path_in_rule_list(path, rule_mapping[key]):
+            return proxy_config["service_uris"][key]
     return False
 
 
@@ -109,6 +108,7 @@ if args.dev:
     load_dotenv('default.env')
     proxy_config['service_uris']['scheduler_rest_api'] = f'http://{os.getenv("SCHEDULER_HOST")}:{os.getenv("SCHEDULER_PORT")}'
     proxy_config['service_uris']['foundations_rest_api'] = f'http://{os.getenv("FOUNDATIONS_REST_API_HOST")}:{os.getenv("FOUNDATIONS_REST_API_PORT")}'
+    proxy_config['service_uris']['orbit_rest_api'] = f'http://{os.getenv("ORBIT_REST_API_HOST")}:{os.getenv("ORBIT_REST_API_PORT")}'
 
 
 @app.route("/")
