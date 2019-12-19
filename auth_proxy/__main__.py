@@ -37,6 +37,13 @@ def get_args():
         "-p", "--port", type=int, default=80, help="port to bind server (default: 80)"
     )
     parser.add_argument("--dev", action="store_true", help="launch as part of a dev environment")
+    parser.add_argument(
+        "-t",
+        "--type",
+        type=str,
+        default="atlas",
+        help="the type of the proxy [atlas/orbit] (default: atlas)",
+    )
     return parser.parse_args(sys.argv[1:])
 
 
@@ -99,12 +106,17 @@ def _token_is_valid(headers):
 
 args = get_args()
 app = Flask(__name__)
-route_mapping = _load_yaml("route_mapping.yaml")
+import os
+
+if args.type == 'orbit':
+    os.environ['ROUTE_MAPPING'] = 'route_mapping_orbit.yaml'
+    os.environ['PROXY_CONFIG'] = 'proxy_config_orbit.yaml'
+
+route_mapping = _load_yaml(os.getenv('ROUTE_MAPPING', 'route_mapping_atlas.yaml'))
 rule_mapping = _generate_route_mapping_rules(route_mapping)
-proxy_config = _load_yaml("proxy_config.yaml")
+proxy_config = _load_yaml(os.getenv('PROXY_CONFIG', 'proxy_config_atlas.yaml'))
 
 if args.dev:
-    import os
     load_dotenv('default.env')
     proxy_config['service_uris']['scheduler_rest_api'] = f'http://{os.getenv("SCHEDULER_HOST")}:{os.getenv("SCHEDULER_PORT")}'
     proxy_config['service_uris']['foundations_rest_api'] = f'http://{os.getenv("FOUNDATIONS_REST_API_HOST")}:{os.getenv("FOUNDATIONS_REST_API_PORT")}'
