@@ -38,23 +38,38 @@ pipeline{
     stage('Setup Docker Credentails') {
       steps {
         container("python3") {
-          sh 'docker login $NEXUS_DOCKER_REGISTRY -u $NEXUS_USER -p $NEXUS_PASSWORD'
+          sh 'docker login $DOCKER_REGISTRY -u $NEXUS_USER -p $NEXUS_PASSWORD'
           sh 'docker login $NEXUS_DOCKER_STAGING -u $NEXUS_USER -p $NEXUS_PASSWORD'
         }
       }
     }
-    stage('Build and push Auth Proxy for Atlas'){
+    stage('Build Auth Proxy for Atlas'){
       steps {
         container("python3") {
-          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas ./build_and_push.sh null"
-          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas-team ./build_and_push.sh"
+          sh "DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas ./build_image.sh null"
+          sh "DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas-team ./build_image.sh"
         }
       }
     }
-    stage('Build and push Auth Proxy for Orbit'){
+    stage('Push Auth Proxy for Atlas'){
       steps {
         container("python3") {
-          sh "NEXUS_DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/orbit-team ./build_and_push.sh"
+          sh "DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas ./push_image.sh"
+          sh "DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/atlas-team ./push_image.sh"
+        }
+      }
+    }
+    stage('Build Auth Proxy for Orbit'){
+      steps {
+        container("python3") {
+          sh "DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/orbit-team ./build_image.sh"
+        }
+      }
+    }
+    stage('Push Auth Proxy for Orbit'){
+      steps {
+        container("python3") {
+          sh "DOCKER_REGISTRY=$NEXUS_DOCKER_STAGING/orbit-team ./push_image.sh"
         }
       }
     }
