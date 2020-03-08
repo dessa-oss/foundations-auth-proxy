@@ -38,7 +38,6 @@ pipeline{
     stage('Setup Docker Credentails') {
       steps {
         container("python3") {
-          sh 'docker login $DOCKER_REGISTRY -u $NEXUS_USER -p $NEXUS_PASSWORD'
           sh 'docker login $NEXUS_DOCKER_STAGING -u $NEXUS_USER -p $NEXUS_PASSWORD'
         }
       }
