@@ -14,3 +14,7 @@ Source: https://requests.readthedocs.io
 setuptools-scm==3.3.3
 License: MIT
 Source: https://github.com/pypa/setuptools_scm/
+
+PyYAML==5.1.2
+License: MIT
+Source: https://github.com/yaml/pyyaml
