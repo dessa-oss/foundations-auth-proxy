@@ -3,8 +3,6 @@ from flask_cors import CORS
 from urllib.parse import urlparse
 import requests
 
-from dotenv import load_dotenv
-
 def get_args():
     import argparse
     import sys
@@ -29,7 +27,6 @@ def get_args():
     parser.add_argument(
         "-p", "--port", type=int, default=80, help="port to bind server (default: 80)"
     )
-    parser.add_argument("--dev", action="store_true", help="launch as part of a dev environment")
     parser.add_argument(
         "-t",
         "--type",
@@ -108,12 +105,6 @@ if args.type == 'orbit':
 route_mapping = _load_yaml(os.getenv('ROUTE_MAPPING', 'route_mapping_atlas.yaml'))
 rule_mapping = _generate_route_mapping_rules(route_mapping)
 proxy_config = _load_yaml(os.getenv('PROXY_CONFIG', 'proxy_config_atlas.yaml'))
-
-if args.dev:
-    load_dotenv('default.env')
-    proxy_config['service_uris']['scheduler_rest_api'] = f'http://{os.getenv("SCHEDULER_HOST")}:{os.getenv("SCHEDULER_PORT")}'
-    proxy_config['service_uris']['foundations_rest_api'] = f'http://{os.getenv("FOUNDATIONS_REST_API_HOST")}:{os.getenv("FOUNDATIONS_REST_API_PORT")}'
-    proxy_config['service_uris']['orbit_rest_api'] = f'http://{os.getenv("ORBIT_REST_API_HOST")}:{os.getenv("ORBIT_REST_API_PORT")}'
 
 
 @app.route("/")
