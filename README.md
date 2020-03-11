@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="20%" src="dessa_square_logo.png">
+  <img src="dessa_square_logo.png">
 </p>
 
 ---
