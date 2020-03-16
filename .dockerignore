@@ -1,0 +1,14 @@
+venv
+.idea
+__pycache__
+*.pyc
+.vscode
+.env
+.venv
+.DS_Store
+build_and_push.sh
+README.md
+.history
+build_dist.shehanigans
+Jenkinsfile
+get_version.py
