@@ -1,0 +1,10 @@
+service_uris:
+  scheduler_rest_api: http://localhost:5000
+  foundations_rest_api: http://localhost:37722
+supported_proxy_methods:
+  - GET
+  - POST
+  - DELETE
+  - PATCH
+  - OPTION
+  - PUT
