@@ -112,7 +112,7 @@ def root():
     return "Welcome to the Foundations authentication proxy"
 
 
-@app.route("/heartbeat", methods=["POST"])
+@app.route("/heartbeat", methods=["GET"])
 def heartbeat():
     return "Alive"
 
