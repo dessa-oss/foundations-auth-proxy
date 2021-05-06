@@ -2,4 +2,4 @@ Flask==1.1.1
 PyYAML==5.1.2
 requests==2.22.0
 setuptools-scm==3.3.3
-flask-cors==3.0.6
+flask-cors==3.0.9
